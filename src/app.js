@@ -3,28 +3,34 @@ const cors = require('cors');
 
 const app = express();
 
-// --- MIDDLEWARES ---
-app.use(cors());
-app.use(express.json());
+// --- MIDDLEWARES GLOBALES ---
+app.use(cors()); // Permite peticiones desde otros servidores (como Postman o el Frontend)
+app.use(express.json()); // Permite que el servidor entienda archivos JSON
 
-// --- RUTAS ---
+// --- RUTAS DE LA API ---
 
-// 1. Usuarios
+// 1. Autenticación (Login y Registro)
+// Esta es la más importante para esta tarea. 
+// Usaremos el archivo de rutas que acabamos de blindar.
+app.use('/api/auth', require('./routes/UsuarioRouter')); 
+
+// 2. Usuarios (Gestión de perfiles)
 app.use('/api/usuarios', require('./routes/UsuarioRouter'));
 
-// 2. Categorías
+// 3. Categorías
 app.use('/api/categorias', require('./routes/CategoriaRouter'));
 
-// 3. Productos
+// 4. Productos
 app.use('/api/productos', require('./routes/ProductoRouter'));
 
-// 4. Movimientos
+// 5. Movimientos
 app.use('/api/movimientos', require('./routes/MovimientoRouter'));
 
-// 5. Historial
+// 6. Historial
 app.use('/api/historial', require('./routes/HistorialRouter'));
 
-// --- RUTA DE PRUEBA ---
+
+// --- RUTA DE PRUEBA (Health Check) ---
 app.get('/', (req, res) => {
     res.send('API de Inventario - Servidor funcionando correctamente ✅');
 });
